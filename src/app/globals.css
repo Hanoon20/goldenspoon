@@ -28,6 +28,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Set before first paint by INTRO_GUARD_SCRIPT (src/lib/intro.ts). */
+.intro-seen #intro {
+  display: none;
+}
+
 body {
   background: var(--color-ink-50);
   color: var(--color-ink-900);
