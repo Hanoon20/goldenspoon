@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  sortOrder Int        @default(0)
+  items     MenuItem[]
+  createdAt DateTime   @default(now())
+}
+
+model MenuItem {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String      @default("")
+  price       Int // in LKR (whole rupees)
+  image       String      @default("")
+  isVeg       Boolean     @default(true)
+  isAvailable Boolean     @default(true)
+  isFeatured  Boolean     @default(false)
+  sortOrder   Int         @default(0)
+  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryId  String
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([categoryId])
+}
+
+enum OrderType {
+  DELIVERY
+  TAKEAWAY
+}
+
+enum OrderStatus {
+  NEW
+  CONFIRMED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  COMPLETED
+  CANCELLED
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  orderNo      Int         @unique @default(autoincrement())
+  customerName String
+  phone        String
+  type         OrderType
+  address      String      @default("")
+  note         String      @default("")
+  subtotal     Int
+  deliveryFee  Int         @default(0)
+  total        Int
+  status       OrderStatus @default(NEW)
+  items        OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Name and price are copied at order time so later menu edits don't change old orders.
+model OrderItem {
+  id         String    @id @default(cuid())
+  order      Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId    String
+  menuItem   MenuItem? @relation(fields: [menuItemId], references: [id], onDelete: SetNull)
+  menuItemId String?
+  name       String
+  price      Int
+  qty        Int
+
+  @@index([orderId])
+}
+
+// Single row (id = 1) holding restaurant-wide settings.
+model Setting {
+  id             Int     @id @default(1)
+  restaurantName String  @default("Golden Spoon")
+  tagline        String  @default("Authentic flavours, served with love")
+  whatsappNumber String  @default("94770000000")
+  phone          String  @default("")
+  email          String  @default("")
+  address        String  @default("")
+  mapUrl         String  @default("")
+  openingHours   String  @default("10:00 AM – 10:00 PM, every day")
+  deliveryFee    Int     @default(250)
+  minOrder       Int     @default(0)
+  isOpen         Boolean @default(true)
+}
