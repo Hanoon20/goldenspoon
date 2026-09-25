@@ -72,6 +72,12 @@ Generate `AUTH_SECRET` with `openssl rand -base64 32`.
 
 This also works on [Vercel](https://vercel.com) with no extra config: import the repo and add the same environment variables. The `vercel-build` script runs the migrations, and the first admin is created on first login as above. On Vercel, you can put both the database and the functions in Singapore (`sin1`).
 
+## Lost the admin login?
+
+1. In your hosting dashboard (Vercel or Netlify), set `ADMIN_EMAIL` and `ADMIN_PASSWORD` to the login you want, and add `ADMIN_RESET` = `true`.
+2. Redeploy, then log in at `/admin` with those values. This replaces the admin account.
+3. Delete `ADMIN_RESET` and redeploy again. Otherwise, every login with those values resets the account.
+
 ## Dish photos
 
 Paste any public image URL in the dish form. For uploads, a free [Cloudinary](https://cloudinary.com) account works well: upload the photo, then copy its URL.
