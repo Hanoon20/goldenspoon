@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 
   --color-gold-50: #fdf8ec;
   --color-gold-100: #f9edcc;
@@ -15,13 +15,13 @@
   --color-gold-800: #5f4616;
   --color-gold-900: #3f2f0f;
 
-  /* Maroon-black and warm cream, from the logo background */
-  --color-ink-50: #faf6f0;
-  --color-ink-100: #f0e8dd;
-  --color-ink-200: #dccfc0;
-  --color-ink-700: #4a2c2c;
-  --color-ink-800: #2b0c0e;
-  --color-ink-900: #1c0507;
+  /* Black and white, paired with the logo gold */
+  --color-ink-50: #ffffff;
+  --color-ink-100: #f3f3f3;
+  --color-ink-200: #dedede;
+  --color-ink-700: #3a3a3a;
+  --color-ink-800: #161616;
+  --color-ink-900: #0a0a0a;
 }
 
 html {
