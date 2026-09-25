@@ -29,8 +29,8 @@ export function Navbar({ restaurantName }: { restaurantName: string }) {
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-mark.png" alt="" className="h-9 w-auto" />
-          <span className="font-display text-lg font-bold uppercase tracking-wider text-gold-300">{restaurantName}</span>
+          <img src="/logo-mark.png" alt="" className="h-8 w-auto min-[400px]:h-9" />
+          <span className="whitespace-nowrap font-display text-base font-bold uppercase tracking-wider text-gold-300 min-[400px]:text-lg">{restaurantName}</span>
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
