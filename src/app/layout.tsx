@@ -1,18 +1,20 @@
-import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
 
 export const metadata: Metadata = {
   title: { default: "Golden Spoon", template: "%s · Golden Spoon" },
-  description: "Order delicious food from Golden Spoon on WhatsApp.",
+  description: "Golden Spoon: taste the luxury. Browse the menu and order on WhatsApp.",
 };
+
+export const viewport: Viewport = { themeColor: "#1c0507" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

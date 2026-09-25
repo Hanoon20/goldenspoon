@@ -2,25 +2,26 @@
 
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
 
-  --color-gold-50: #fffaeb;
-  --color-gold-100: #fef0c7;
-  --color-gold-200: #fde08a;
-  --color-gold-300: #fccb4d;
-  --color-gold-400: #fbb524;
-  --color-gold-500: #e8940b;
-  --color-gold-600: #c86f06;
-  --color-gold-700: #a54d09;
-  --color-gold-800: #863c0f;
-  --color-gold-900: #6e3210;
+  --color-gold-50: #fdf8ec;
+  --color-gold-100: #f9edcc;
+  --color-gold-200: #f2dc9a;
+  --color-gold-300: #ebc96a;
+  --color-gold-400: #e0b44a;
+  --color-gold-500: #c99a34;
+  --color-gold-600: #a67a24;
+  --color-gold-700: #82601d;
+  --color-gold-800: #5f4616;
+  --color-gold-900: #3f2f0f;
 
-  --color-ink-50: #f7f6f4;
-  --color-ink-100: #ece9e4;
-  --color-ink-200: #d6d0c7;
-  --color-ink-700: #3d3832;
-  --color-ink-800: #26221e;
-  --color-ink-900: #171411;
+  /* Maroon-black and warm cream, from the logo background */
+  --color-ink-50: #faf6f0;
+  --color-ink-100: #f0e8dd;
+  --color-ink-200: #dccfc0;
+  --color-ink-700: #4a2c2c;
+  --color-ink-800: #2b0c0e;
+  --color-ink-900: #1c0507;
 }
 
 html {
@@ -45,7 +46,7 @@ body {
 }
 
 @utility btn-primary {
-  @apply btn bg-gold-500 text-white hover:bg-gold-600;
+  @apply btn bg-gold-400 text-ink-900 hover:bg-gold-300;
 }
 
 @utility btn-dark {

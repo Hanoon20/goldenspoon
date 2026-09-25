@@ -7,8 +7,9 @@ export function Footer({ settings }: { settings: Setting }) {
     <footer className="mt-20 bg-ink-900 text-ink-200">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-3">
         <div>
-          <p className="font-display text-2xl font-bold text-white">{settings.restaurantName}</p>
-          <p className="mt-2 text-sm">{settings.tagline}</p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt={settings.restaurantName} className="h-24 w-auto" />
+          <p className="mt-3 text-sm">{settings.tagline}</p>
         </div>
         <div className="text-sm">
           <p className="mb-2 font-semibold text-white">Visit us</p>
