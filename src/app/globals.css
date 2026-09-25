@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+
+  --color-gold-50: #fffaeb;
+  --color-gold-100: #fef0c7;
+  --color-gold-200: #fde08a;
+  --color-gold-300: #fccb4d;
+  --color-gold-400: #fbb524;
+  --color-gold-500: #e8940b;
+  --color-gold-600: #c86f06;
+  --color-gold-700: #a54d09;
+  --color-gold-800: #863c0f;
+  --color-gold-900: #6e3210;
+
+  --color-ink-50: #f7f6f4;
+  --color-ink-100: #ece9e4;
+  --color-ink-200: #d6d0c7;
+  --color-ink-700: #3d3832;
+  --color-ink-800: #26221e;
+  --color-ink-900: #171411;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink-50);
+  color: var(--color-ink-900);
+}
+
+@utility input {
+  @apply w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-gold-500 focus:ring-2 focus:ring-gold-200;
+}
+
+@utility label {
+  @apply mb-1 block text-sm font-medium text-ink-700;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@utility btn-primary {
+  @apply btn bg-gold-500 text-white hover:bg-gold-600;
+}
+
+@utility btn-dark {
+  @apply btn bg-ink-900 text-white hover:bg-ink-800;
+}
+
+@utility btn-outline {
+  @apply btn border border-ink-200 bg-white text-ink-800 hover:bg-ink-100;
+}
+
+@utility btn-danger {
+  @apply btn bg-red-600 text-white hover:bg-red-700;
+}
+
+@utility card {
+  @apply rounded-2xl border border-ink-100 bg-white shadow-sm;
+}
