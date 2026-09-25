@@ -14,7 +14,7 @@ export const viewport: Viewport = { themeColor: "#0a0a0a" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${poppins.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${dmSans.variable} ${poppins.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
