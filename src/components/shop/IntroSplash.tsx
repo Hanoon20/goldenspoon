@@ -10,6 +10,9 @@ import { cn } from "@/lib/utils";
  * Shown once per browser tab. Skipped when already seen, when the visitor prefers reduced motion, or when
  * autoplay is blocked; INTRO_GUARD_SCRIPT hides it before first paint in the first two cases.
  */
+/** Seconds before the video ends at which the fade into the site begins. */
+const CROSSFADE_LEAD = 0.6;
+
 export function IntroSplash() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<"playing" | "leaving" | "done">("playing");
@@ -82,6 +85,11 @@ export function IntroSplash() {
         playsInline
         autoPlay
         preload="auto"
+        // Start fading into the site just before the last frame, so the video and the page cross-fade.
+        onTimeUpdate={(e) => {
+          const v = e.currentTarget;
+          if (v.duration && v.duration - v.currentTime < CROSSFADE_LEAD) finish();
+        }}
         onEnded={finish}
         // React also delivers <source> errors here; a failed first source just means the browser tries the next.
         onError={(e) => e.target === e.currentTarget && finish()}
