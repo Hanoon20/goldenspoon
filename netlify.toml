@@ -1,0 +1,7 @@
+[build]
+  # Create/update the database tables, then build the site.
+  command = "npx prisma migrate deploy && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
