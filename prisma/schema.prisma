@@ -32,7 +32,9 @@ model MenuItem {
   name        String
   slug        String      @unique
   description String      @default("")
-  price       Int // in LKR (whole rupees)
+  price       Int // in LKR (whole rupees); the regular portion, or the only price
+  fullPrice   Int? // set when the dish also comes in a full portion
+  baseLabel   String      @default("Normal") // name of the regular portion, e.g. "Normal" or "Half"
   image       String      @default("")
   isVeg       Boolean     @default(true)
   isAvailable Boolean     @default(true)

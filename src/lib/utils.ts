@@ -1,5 +1,6 @@
 export function formatPrice(rupees: number) {
-  return `Rs. ${rupees.toLocaleString("en-LK")}`;
+  // Non-breaking space keeps "Rs. 1,000" together on narrow screens.
+  return `Rs.\u00a0${rupees.toLocaleString("en-LK")}`;
 }
 
 export function slugify(s: string) {

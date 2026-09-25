@@ -8,6 +8,8 @@ export type Dish = {
   name: string;
   description: string;
   price: number;
+  fullPrice: number | null;
+  baseLabel: string;
   image: string;
   isVeg: boolean;
   isAvailable: boolean;
@@ -32,13 +34,36 @@ export function DishCard({ dish }: { dish: Dish }) {
           <h3 className="font-semibold leading-snug">{dish.name}</h3>
         </div>
         <p className="mt-1.5 line-clamp-2 flex-1 text-sm text-ink-700/80">{dish.description}</p>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-lg font-bold">{formatPrice(dish.price)}</span>
-          <AddToCartButton
-            disabled={!dish.isAvailable}
-            item={{ id: dish.id, name: dish.name, price: dish.price, image: dish.image, isVeg: dish.isVeg }}
-          />
-        </div>
+        {dish.fullPrice ? (
+          <div className="mt-4 space-y-2">
+            {(
+              [
+                ["base", dish.baseLabel, dish.price],
+                ["full", "Full", dish.fullPrice],
+              ] as const
+            ).map(([portion, label, price]) => (
+              <div key={portion} className="flex items-center justify-between rounded-lg bg-ink-100/60 py-1.5 pl-3 pr-1.5">
+                <span className="text-sm">
+                  <span className="text-ink-700/80">{label}</span>{" "}
+                  <span className="font-bold">{formatPrice(price)}</span>
+                </span>
+                <AddToCartButton
+                  compact
+                  disabled={!dish.isAvailable}
+                  item={{ id: dish.id, portion, portionLabel: label, name: dish.name, price, image: dish.image, isVeg: dish.isVeg }}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-4 flex items-center justify-between">
+            <span className="text-lg font-bold">{formatPrice(dish.price)}</span>
+            <AddToCartButton
+              disabled={!dish.isAvailable}
+              item={{ id: dish.id, portion: "base", portionLabel: "", name: dish.name, price: dish.price, image: dish.image, isVeg: dish.isVeg }}
+            />
+          </div>
+        )}
       </div>
     </article>
   );
