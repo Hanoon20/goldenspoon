@@ -65,9 +65,9 @@ async function main() {
   if (!email || !password) throw new Error("Set ADMIN_EMAIL and ADMIN_PASSWORD before seeding.");
 
   await prisma.admin.upsert({
-    where: { email },
+    where: { email: email.trim().toLowerCase() },
     update: {},
-    create: { name: "Admin", email, passwordHash: await bcrypt.hash(password, 10) },
+    create: { name: "Admin", email: email.trim().toLowerCase(), passwordHash: await bcrypt.hash(password, 10) },
   });
 
   await prisma.setting.upsert({ where: { id: 1 }, update: {}, create: { id: 1 } });
