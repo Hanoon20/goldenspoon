@@ -30,10 +30,16 @@ export default async function HomePage() {
             <p className="inline-block rounded-full border border-gold-300/40 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-200">
               {settings.openingHours}
             </p>
-            <h1 className="mt-5 font-display text-5xl font-bold leading-tight md:text-6xl">
-              {settings.restaurantName}
+            {/* The logo already shows the name and tagline; keep them in the h1 for search engines and screen readers. */}
+            <h1 className="sr-only">
+              {settings.restaurantName}: {settings.tagline}
             </h1>
-            <p className="mt-4 max-w-md text-lg text-ink-200">{settings.tagline}</p>
+            <p className="mt-5 font-display text-4xl font-bold leading-tight text-gold-300 md:text-5xl">
+              Fine flavours, delivered to your door
+            </p>
+            <p className="mt-4 max-w-md text-lg text-ink-200">
+              Browse our menu, fill your cart and send your order on WhatsApp in a few taps.
+            </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/menu" className="btn-primary px-6 py-3 text-base">Order now</Link>
               <a href={wa} target="_blank" rel="noreferrer" className="btn border border-white/30 px-6 py-3 text-base text-white hover:bg-white/10">
@@ -41,10 +47,9 @@ export default async function HomePage() {
               </a>
             </div>
           </div>
-          <div className="hidden justify-center md:flex">
-            <div className="grid h-80 w-80 place-items-center rounded-full bg-gradient-to-br from-gold-300 to-gold-600 text-[9rem] shadow-2xl shadow-gold-900/50">
-              🍛
-            </div>
+          <div className="order-first flex justify-center md:order-none">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt={settings.restaurantName} className="w-full max-w-[260px] drop-shadow-2xl md:max-w-md" />
           </div>
         </div>
       </section>

@@ -9,11 +9,14 @@ export function DishImage({ src, alt, className }: { src: string; alt: string; c
   return (
     <div
       className={cn(
-        "flex h-full w-full items-center justify-center bg-gradient-to-br from-gold-100 via-gold-200 to-gold-300",
+        "flex h-full w-full items-center justify-center bg-gradient-to-br from-ink-800 to-ink-900",
         className,
       )}
+      role="img"
+      aria-label={alt}
     >
-      <span className="font-display text-5xl font-bold text-gold-700/60">{alt.charAt(0)}</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo-mark.png" alt="" className="h-1/2 max-h-28 w-auto opacity-70" />
     </div>
   );
 }

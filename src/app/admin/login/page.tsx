@@ -7,11 +7,12 @@ export default function LoginPage() {
   const [error, onSubmit, pending] = useFormAction(login, null);
 
   return (
-    <div className="grid min-h-screen place-items-center bg-ink-900 px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-ink-900 px-4">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt="Golden Spoon" className="w-56" />
       <form onSubmit={onSubmit} className="card w-full max-w-sm space-y-4 p-8">
         <div className="text-center">
-          <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-gold-500 text-2xl">🥄</span>
-          <h1 className="mt-3 font-display text-2xl font-bold">Admin login</h1>
+          <h1 className="font-display text-2xl font-bold">Admin login</h1>
         </div>
         <div>
           <label className="label" htmlFor="email">Email</label>

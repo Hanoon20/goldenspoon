@@ -100,7 +100,7 @@ model OrderItem {
 model Setting {
   id             Int     @id @default(1)
   restaurantName String  @default("Golden Spoon")
-  tagline        String  @default("Authentic flavours, served with love")
+  tagline        String  @default("Taste the Luxury")
   whatsappNumber String  @default("94770000000")
   phone          String  @default("")
   email          String  @default("")

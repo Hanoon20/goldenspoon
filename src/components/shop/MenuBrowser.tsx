@@ -54,7 +54,7 @@ export function MenuBrowser({ categories, dishes }: { categories: Category[]; di
               onClick={() => setActive(c.id)}
               className={cn(
                 "shrink-0 rounded-full border px-4 py-1.5 text-sm font-medium transition",
-                active === c.id ? "border-gold-500 bg-gold-500 text-white" : "border-ink-200 bg-white hover:border-gold-400",
+                active === c.id ? "border-ink-900 bg-ink-900 text-gold-300" : "border-ink-200 bg-white hover:border-gold-400",
               )}
             >
               {c.name}

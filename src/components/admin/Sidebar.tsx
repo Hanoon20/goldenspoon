@@ -21,7 +21,8 @@ export function Sidebar({ adminName, newOrders }: { adminName: string; newOrders
   return (
     <aside className="flex shrink-0 flex-col bg-ink-900 text-ink-200 md:h-screen md:w-60 md:sticky md:top-0">
       <div className="flex items-center gap-2 px-5 py-5">
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-gold-500 text-white">🥄</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo-mark.png" alt="" className="h-8 w-auto" />
         <span className="font-display text-lg font-bold text-white">Admin</span>
       </div>
       <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-1 md:flex-col md:overflow-visible">
@@ -31,7 +32,7 @@ export function Sidebar({ adminName, newOrders }: { adminName: string; newOrders
             href={n.href}
             className={cn(
               "flex shrink-0 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
-              isActive(n.href) ? "bg-gold-500 text-white" : "hover:bg-white/10",
+              isActive(n.href) ? "bg-gold-400 text-ink-900" : "hover:bg-white/10",
             )}
           >
             <n.icon className="h-4 w-4" />
