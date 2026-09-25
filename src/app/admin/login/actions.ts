@@ -2,6 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
+import type { Admin } from "@prisma/client";
 import { db } from "@/lib/db";
 import { createSession } from "@/lib/auth";
 
@@ -13,7 +14,13 @@ export async function login(_prev: string | null, formData: FormData): Promise<s
   const password = String(formData.get("password") ?? "");
   if (!email || !password) return "Enter your email and password.";
 
-  const admin = (await db.admin.findUnique({ where: { email } })) ?? (await bootstrapFirstAdmin(email, password));
+  let admin = await db.admin.findUnique({ where: { email } });
+  if (!admin && (await db.admin.count()) === 0) {
+    // Fresh deployment: no admin yet. Explain exactly what's wrong so setup is easy.
+    const result = await bootstrapFirstAdmin(email, password);
+    if ("error" in result) return result.error;
+    admin = result.admin;
+  }
   const valid = await bcrypt.compare(password, admin?.passwordHash ?? DUMMY_HASH);
   if (!admin || !valid) return "Invalid email or password.";
 
@@ -24,19 +31,28 @@ export async function login(_prev: string | null, formData: FormData): Promise<s
 /**
  * On a fresh deployment there are no admins yet. The first login that matches the
  * ADMIN_EMAIL / ADMIN_PASSWORD environment variables creates the account, so no seed
- * script has to be run by hand. Does nothing once any admin exists.
+ * script has to be run by hand. Only called while no admin exists.
  */
-async function bootstrapFirstAdmin(email: string, password: string) {
+async function bootstrapFirstAdmin(email: string, password: string): Promise<{ admin: Admin } | { error: string }> {
+  // Trim so a stray space or newline pasted into the hosting dashboard doesn't break setup.
   const envEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-  const envPassword = process.env.ADMIN_PASSWORD;
-  if (!envEmail || !envPassword || email !== envEmail || password !== envPassword) return null;
-  if ((await db.admin.count()) > 0) return null;
+  const envPassword = process.env.ADMIN_PASSWORD?.trim();
+  if (!envEmail || !envPassword) {
+    return {
+      error:
+        "Setup not finished: ADMIN_EMAIL and ADMIN_PASSWORD are not set for this deployment. Add them to the environment variables (Production) and redeploy.",
+    };
+  }
+  if (email !== envEmail) return { error: "This email doesn't match ADMIN_EMAIL in your environment variables." };
+  if (password.trim() !== envPassword) {
+    return { error: "This password doesn't match ADMIN_PASSWORD in your environment variables." };
+  }
+  const passwordHash = await bcrypt.hash(envPassword, 10);
   try {
-    return await db.admin.create({
-      data: { name: "Admin", email, passwordHash: await bcrypt.hash(password, 10) },
-    });
+    return { admin: await db.admin.create({ data: { name: "Admin", email, passwordHash } }) };
   } catch {
     // Two first logins at once: the other request created it.
-    return db.admin.findUnique({ where: { email } });
+    const existing = await db.admin.findUnique({ where: { email } });
+    return existing ? { admin: existing } : { error: "Could not create the admin account. Please try again." };
   }
 }
