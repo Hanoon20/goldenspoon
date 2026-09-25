@@ -64,16 +64,13 @@ Generate `AUTH_SECRET` with `openssl rand -base64 32`.
 1. **Database:** create a project at [neon.tech](https://neon.tech) in the **AWS US East (Ohio)** region, close to Netlify's default server location, so pages load fast. Copy the **pooled** connection string (for `DATABASE_URL`) and the **direct** one (for `DIRECT_URL`).
 2. **Netlify:** log in at [netlify.com](https://app.netlify.com) with GitHub → **Add new site → Import an existing project** → pick this repo. The build settings come from `netlify.toml`, so leave them as they are.
 3. **Environment variables:** in Site configuration → Environment variables, add every variable from `.env.example`. Then run **Deploys → Trigger deploy**. Each deploy runs the database migrations automatically.
-4. **First admin and sample menu:** run the seed once against the production database from your computer:
-   ```bash
-   DATABASE_URL="<neon pooled url>" DIRECT_URL="<neon direct url>" ADMIN_EMAIL="you@example.com" ADMIN_PASSWORD="a-strong-password" npm run db:seed
-   ```
+4. **First admin:** nothing to run. Open `/admin/login` and sign in with the `ADMIN_EMAIL` and `ADMIN_PASSWORD` you set. The first matching login creates the admin account. (Optional: to load the sample menu, run `npm run db:seed` from your computer with the production `DATABASE_URL` and `DIRECT_URL`.)
 5. Log in at `https://<your-site>.netlify.app/admin`. Under **Settings**, set the real WhatsApp number, address and hours. Under **Menu**, replace the sample dishes with the real menu and photos.
 6. (Optional) Add your domain, e.g. `goldenspoon.lk`, in Domain management and add the DNS records Netlify shows.
 
 ### Vercel instead
 
-This also works on [Vercel](https://vercel.com) with no extra config: import the repo and add the same environment variables. The `vercel-build` script runs the migrations. On Vercel, you can put both the database and the functions in Singapore (`sin1`).
+This also works on [Vercel](https://vercel.com) with no extra config: import the repo and add the same environment variables. The `vercel-build` script runs the migrations, and the first admin is created on first login as above. On Vercel, you can put both the database and the functions in Singapore (`sin1`).
 
 ## Dish photos
 
