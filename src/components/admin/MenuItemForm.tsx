@@ -26,11 +26,27 @@ export function MenuItemForm({ item, categories }: Props) {
           <label className="label" htmlFor="description">Description</label>
           <textarea id="description" name="description" rows={3} className="input" defaultValue={item?.description} />
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 rounded-xl border border-ink-100 bg-ink-100/40 p-4 sm:grid-cols-3">
           <div>
             <label className="label" htmlFor="price">Price (Rs.)</label>
             <input id="price" name="price" type="number" min={1} step={1} required className="input" defaultValue={item?.price} />
           </div>
+          <div>
+            <label className="label" htmlFor="fullPrice">Full portion price (Rs.)</label>
+            <input id="fullPrice" name="fullPrice" type="number" min={1} step={1} placeholder="Leave empty if one size" className="input" defaultValue={item?.fullPrice ?? ""} />
+          </div>
+          <div>
+            <label className="label" htmlFor="baseLabel">Regular portion is called</label>
+            <select id="baseLabel" name="baseLabel" className="input" defaultValue={item?.baseLabel ?? "Normal"}>
+              <option value="Normal">Normal</option>
+              <option value="Half">Half</option>
+            </select>
+          </div>
+          <p className="text-xs text-ink-700/70 sm:col-span-3">
+            If you fill in a full portion price, customers choose between the regular portion (Price) and Full.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="label" htmlFor="categoryId">Category</label>
             <select id="categoryId" name="categoryId" required className="input" defaultValue={item?.categoryId ?? ""}>

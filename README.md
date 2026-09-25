@@ -17,7 +17,7 @@ Built for Sri Lanka: prices in Rs. (LKR), phone numbers like `077 123 4567` are 
 - Login with email and password (bcrypt-hashed, signed httpOnly session cookie)
 - Dashboard: today's orders and revenue, active orders, recent orders, top dishes
 - Orders: filter by status, view details, update status, reply to the customer on WhatsApp or call them
-- Menu: add, edit and delete dishes, photo URL with preview, bestseller flag, one-click sold-out toggle
+- Menu: add, edit and delete dishes, Normal/Full (or Half/Full) portion prices, photo URL with preview, bestseller flag, one-click sold-out toggle
 - Categories: add, rename, reorder and delete
 - Settings: restaurant name, WhatsApp number, address, map link, hours, delivery fee, minimum order, open/closed switch, change password
 
@@ -30,7 +30,8 @@ Next.js 16 (App Router, Server Actions) · TypeScript · Tailwind CSS 4 · Postg
 ```
 prisma/
   schema.prisma          Database models (Admin, Category, MenuItem, Order, OrderItem, Setting)
-  seed.ts                First admin account + sample Sri Lankan menu
+  menu-data.ts           The restaurant's menu (from the printed menu card)
+  seed.ts                First admin account + the menu, for local development
   migrations/
 src/
   app/

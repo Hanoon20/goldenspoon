@@ -10,7 +10,7 @@ export default async function MenuPage() {
     db.menuItem.findMany({
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
       select: {
-        id: true, name: true, description: true, price: true, image: true,
+        id: true, name: true, description: true, price: true, fullPrice: true, baseLabel: true, image: true,
         isVeg: true, isAvailable: true, isFeatured: true, categoryId: true,
       },
     }),

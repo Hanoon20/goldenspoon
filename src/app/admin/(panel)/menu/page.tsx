@@ -40,7 +40,11 @@ export default async function AdminMenu() {
                     <p className="truncate font-medium">{d.name}</p>
                     {d.isFeatured && <span className="rounded bg-gold-100 px-1.5 text-xs font-semibold text-gold-800">★</span>}
                   </div>
-                  <p className="text-sm text-ink-700/70">{formatPrice(d.price)}</p>
+                  <p className="text-sm text-ink-700/70">
+                    {d.fullPrice == null
+                      ? formatPrice(d.price)
+                      : `${d.baseLabel} ${formatPrice(d.price)} · Full ${formatPrice(d.fullPrice)}`}
+                  </p>
                 </div>
                 <form action={toggleAvailability}>
                   <input type="hidden" name="id" value={d.id} />

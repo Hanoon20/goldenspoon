@@ -65,7 +65,7 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
       const res = await placeOrder({
         ...form,
         type,
-        items: items.map((i) => ({ id: i.id, qty: i.qty })),
+        items: items.map((i) => ({ id: i.id, portion: i.portion, qty: i.qty })),
       });
       if (!res.ok) {
         setError(res.error);
@@ -84,28 +84,31 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
         {/* Items */}
         <div className="card divide-y divide-ink-100">
           {items.map((i) => (
-            <div key={i.id} className="flex items-center gap-4 p-4">
+            <div key={i.key} className="flex items-center gap-4 p-4">
               <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl">
                 <DishImage src={i.image} alt={i.name} />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <VegBadge isVeg={i.isVeg} />
-                  <p className="truncate font-semibold">{i.name}</p>
+                  <p className="truncate font-semibold">
+                    {i.name}
+                    {i.portionLabel && <span className="ml-1.5 rounded bg-gold-100 px-1.5 py-0.5 text-xs font-semibold text-gold-800">{i.portionLabel}</span>}
+                  </p>
                 </div>
                 <p className="mt-0.5 text-sm text-ink-700/70">{formatPrice(i.price)} each</p>
               </div>
               <div className="flex items-center rounded-lg border border-ink-200">
-                <button onClick={() => setQty(i.id, i.qty - 1)} className="p-2 hover:bg-ink-50" aria-label="Decrease">
+                <button onClick={() => setQty(i.key, i.qty - 1)} className="p-2 hover:bg-ink-50" aria-label="Decrease">
                   <Minus className="h-4 w-4" />
                 </button>
                 <span className="min-w-6 text-center text-sm font-bold">{i.qty}</span>
-                <button onClick={() => setQty(i.id, i.qty + 1)} className="p-2 hover:bg-ink-50" aria-label="Increase">
+                <button onClick={() => setQty(i.key, i.qty + 1)} className="p-2 hover:bg-ink-50" aria-label="Increase">
                   <Plus className="h-4 w-4" />
                 </button>
               </div>
               <p className="hidden w-20 text-right font-semibold sm:block">{formatPrice(i.price * i.qty)}</p>
-              <button onClick={() => remove(i.id)} className="p-2 text-ink-700/50 hover:text-red-600" aria-label="Remove">
+              <button onClick={() => remove(i.key)} className="p-2 text-ink-700/50 hover:text-red-600" aria-label="Remove">
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>
