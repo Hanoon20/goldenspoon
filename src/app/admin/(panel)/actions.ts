@@ -106,7 +106,7 @@ const menuItemSchema = z.object({
     z.coerce.number().int("Full portion price must be a whole number").min(1).max(100000),
   ]),
   baseLabel: z.enum(["Normal", "Half"]),
-  image: z.union([z.literal(""), z.url("Image must be a valid URL (https://…)")]),
+  image: z.union([z.literal(""), z.url("Image must be a valid URL (https://…)"), z.string().regex(/^\/[\w\-./]+$/, "Image must be a valid URL (https://…)")]),
   categoryId: z.string().min(1, "Choose a category"),
   sortOrder: z.coerce.number().int().min(0).max(9999),
   isVeg: z.boolean(),

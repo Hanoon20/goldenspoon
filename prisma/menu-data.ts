@@ -369,6 +369,15 @@ export const FEATURED = new Set([
   "Chicken Nasi Goreng",
 ]);
 
+/** Photos in public/dishes, keyed by dish slug. */
+export const DISH_IMAGES: Record<string, string> = {
+  "bbq-chicken": "/dishes/bbq-chicken.webp",
+  "chicken-biriyani": "/dishes/chicken-biriyani.webp",
+  "chicken-kottu": "/dishes/chicken-kottu.webp",
+  "chicken-nasi-goreng": "/dishes/chicken-nasi-goreng.webp",
+  "mixed-shawal": "/dishes/mixed-shawal.webp",
+};
+
 /** Same rules as slugify() in src/lib/utils.ts, so admin edits keep the same slugs. */
 export function slugify(s: string) {
   return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");

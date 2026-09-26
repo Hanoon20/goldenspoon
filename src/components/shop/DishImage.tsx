@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 
 /** Shows the dish photo, or a warm placeholder when the admin hasn't added one yet. */
 export function DishImage({ src, alt, className }: { src: string; alt: string; className?: string }) {
-  if (/^https?:\/\//.test(src)) {
-    // eslint-disable-next-line @next/next/no-img-element -- admin can paste any image URL
+  if (/^(https?:\/\/|\/)/.test(src)) {
+    // eslint-disable-next-line @next/next/no-img-element -- admin can paste any image URL, or a photo in /public
     return <img src={src} alt={alt} loading="lazy" className={cn("h-full w-full object-cover", className)} />;
   }
   return (
