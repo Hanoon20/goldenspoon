@@ -16,7 +16,7 @@ export function AddToCartButton({ item, disabled, compact }: Props) {
   useEffect(() => setMounted(true), []);
 
   if (disabled) {
-    return <span className="rounded-lg bg-ink-100 px-3 py-2 text-xs font-semibold text-ink-700">Sold out</span>;
+    return <span className="rounded-lg bg-white/5 px-3 py-2 text-xs font-semibold text-white/50">Sold out</span>;
   }
 
   if (!mounted || qty === 0) {
@@ -28,12 +28,12 @@ export function AddToCartButton({ item, disabled, compact }: Props) {
   }
 
   return (
-    <div className="flex items-center overflow-hidden rounded-lg border border-gold-500 bg-gold-50">
-      <button onClick={() => setQty(key, qty - 1)} className={compact ? "p-1.5 text-gold-700 hover:bg-gold-100" : "p-2 text-gold-700 hover:bg-gold-100"} aria-label={`Remove one ${what}`}>
+    <div className="flex items-center overflow-hidden rounded-lg border border-gold-400/60 bg-gold-400/10">
+      <button onClick={() => setQty(key, qty - 1)} className={compact ? "p-1.5 text-gold-200 hover:bg-gold-400/20" : "p-2 text-gold-200 hover:bg-gold-400/20"} aria-label={`Remove one ${what}`}>
         <Minus className="h-4 w-4" />
       </button>
-      <span className="min-w-6 text-center text-sm font-bold text-gold-800">{qty}</span>
-      <button onClick={() => add(item)} className={compact ? "p-1.5 text-gold-700 hover:bg-gold-100" : "p-2 text-gold-700 hover:bg-gold-100"} aria-label={`Add one more ${what}`}>
+      <span className="min-w-6 text-center text-sm font-bold text-gold-100">{qty}</span>
+      <button onClick={() => add(item)} className={compact ? "p-1.5 text-gold-200 hover:bg-gold-400/20" : "p-2 text-gold-200 hover:bg-gold-400/20"} aria-label={`Add one more ${what}`}>
         <Plus className="h-4 w-4" />
       </button>
     </div>

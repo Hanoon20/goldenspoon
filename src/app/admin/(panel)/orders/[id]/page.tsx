@@ -43,7 +43,7 @@ export default async function OrderDetail({ params }: { params: Promise<{ id: st
           {order.address && <p className="whitespace-pre-line text-ink-700/80">{order.address}</p>}
           {order.note && <p className="rounded-lg bg-amber-50 p-2 text-amber-900">Note: {order.note}</p>}
           <div className="flex flex-wrap gap-2 pt-2">
-            <a href={`https://wa.me/${order.phone}?text=${reply}`} target="_blank" rel="noreferrer" className="btn bg-[#25D366] text-white hover:bg-[#1ebe5b]">
+            <a href={`https://wa.me/${order.phone}?text=${reply}`} target="_blank" rel="noreferrer" className="btn bg-[#25D366] text-ink-900 hover:bg-[#3ee07c]">
               <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
             <a href={`tel:+${order.phone}`} className="btn-outline"><Phone className="h-4 w-4" /> Call</a>

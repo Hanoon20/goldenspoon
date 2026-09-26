@@ -33,9 +33,10 @@ html {
   display: none;
 }
 
+/* The customer site is dark (black + gold); the admin panel sets its own light surface. */
 body {
-  background: var(--color-ink-50);
-  color: var(--color-ink-900);
+  background: var(--color-ink-900);
+  color: var(--color-ink-100);
 }
 
 @utility input {
@@ -51,7 +52,7 @@ body {
 }
 
 @utility btn-primary {
-  @apply btn bg-gold-400 text-ink-900 hover:bg-gold-300;
+  @apply btn bg-gold-400 text-ink-900 hover:bg-gold-300 active:scale-[0.98];
 }
 
 @utility btn-dark {
@@ -68,4 +69,46 @@ body {
 
 @utility card {
   @apply rounded-2xl border border-ink-100 bg-white shadow-sm;
+}
+
+/* ---- Customer site (dark) ----
+   Radius system: buttons + inputs 8px (rounded-lg), cards + panels 16px (rounded-2xl), chips full. */
+
+@utility surface {
+  @apply rounded-2xl border border-white/10 bg-white/[0.03] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)];
+}
+
+@utility field {
+  @apply w-full rounded-lg border border-white/15 bg-white/[0.04] px-3 py-2.5 text-sm text-white outline-none transition placeholder:text-white/40 focus:border-gold-400 focus:ring-2 focus:ring-gold-400/30;
+}
+
+@utility field-label {
+  @apply mb-1.5 block text-sm font-medium text-white/80;
+}
+
+@utility btn-ghost {
+  @apply btn border border-white/20 text-white hover:border-gold-300/60 hover:bg-white/5;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

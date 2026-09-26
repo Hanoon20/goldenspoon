@@ -4,7 +4,7 @@ import { waDigits } from "@/lib/utils";
 
 export function Footer({ settings }: { settings: Setting }) {
   return (
-    <footer className="mt-20 bg-ink-900 text-ink-200">
+    <footer className="mt-20 border-t border-white/10 bg-black/40 text-white/70">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-3">
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -23,7 +23,7 @@ export function Footer({ settings }: { settings: Setting }) {
           </a>
           {settings.phone && <a className="block hover:text-gold-300" href={`tel:${settings.phone}`}>Call: {settings.phone}</a>}
           {settings.email && <a className="block hover:text-gold-300" href={`mailto:${settings.email}`}>{settings.email}</a>}
-          <Link href="/menu" className="mt-3 inline-block text-gold-300 hover:text-gold-200">Browse the menu →</Link>
+          <Link href="/menu" className="mt-3 inline-block text-gold-300 hover:text-gold-200">View menu</Link>
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-xs text-ink-200/70">

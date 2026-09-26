@@ -10,7 +10,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-ink-900 px-4">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/logo.png" alt="Golden Spoon" className="w-56" />
-      <form onSubmit={onSubmit} className="card w-full max-w-sm space-y-4 p-8">
+      <form onSubmit={onSubmit} className="card w-full max-w-sm space-y-4 p-8 text-ink-900">
         <div className="text-center">
           <h1 className="font-display text-2xl font-bold">Admin login</h1>
         </div>

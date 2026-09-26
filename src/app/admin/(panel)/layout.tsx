@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const newOrders = await db.order.count({ where: { status: "NEW" } });
 
   return (
-    <div className="flex min-h-screen flex-col md:flex-row">
+    <div className="flex min-h-screen flex-col bg-ink-50 text-ink-900 md:flex-row">
       <Sidebar adminName={admin.name || admin.email} newOrders={newOrders} />
       <div className="flex-1 overflow-x-hidden p-4 md:p-8">{children}</div>
     </div>

@@ -1,175 +1,248 @@
 import Link from "next/link";
-import { ChefHat, Clock, MapPin, MessageCircle, Phone, Truck } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Bike, Clock, MapPin, MessageCircle, Phone, Sparkle, UtensilsCrossed } from "lucide-react";
 import { DishCard } from "@/components/shop/DishCard";
+import { HeroStage } from "@/components/motion/HeroStage";
+import { Reveal } from "@/components/motion/Reveal";
+import { SignatureScroll } from "@/components/motion/SignatureScroll";
+import { TiltCard } from "@/components/motion/TiltCard";
+import { ZoomStory } from "@/components/motion/ZoomStory";
 import { db } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
-import { waDigits } from "@/lib/utils";
+import { cn, formatPrice, normalizePhone, waDigits } from "@/lib/utils";
 
 export default async function HomePage() {
-  const [settings, featured, categories] = await Promise.all([
+  const [settings, featured, categories, dishCount] = await Promise.all([
     getSettings(),
     db.menuItem.findMany({
       where: { isFeatured: true },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-      take: 6,
+      take: 8,
     }),
     db.category.findMany({
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-      include: { _count: { select: { items: true } } },
+      include: { _count: { select: { items: true } }, items: { select: { price: true }, orderBy: { price: "asc" }, take: 1 } },
     }),
+    db.menuItem.count(),
   ]);
   const wa = `https://wa.me/${waDigits(settings.whatsappNumber)}`;
+  const withDishes = categories.filter((c) => c._count.items > 0);
+  const bento = withDishes.slice(0, 4);
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-ink-900 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,var(--color-gold-600),transparent_55%)] opacity-50" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 md:grid-cols-2 md:py-28">
-          <div>
-            <p className="inline-block rounded-full border border-gold-300/40 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-gold-200">
-              {settings.openingHours}
-            </p>
-            {/* The logo already shows the name and tagline; keep them in the h1 for search engines and screen readers. */}
-            <h1 className="sr-only">
-              {settings.restaurantName}: {settings.tagline}
-            </h1>
-            <p className="mt-5 font-display text-4xl font-bold leading-tight text-gold-300 md:text-5xl">
-              Fine flavours, delivered to your door
-            </p>
-            <p className="mt-4 max-w-md text-lg text-ink-200">
-              Browse our menu, fill your cart and send your order on WhatsApp in a few taps.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/menu" className="btn-primary px-6 py-3 text-base">Order now</Link>
-              <a href={wa} target="_blank" rel="noreferrer" className="btn border border-white/30 px-6 py-3 text-base text-white hover:bg-white/10">
-                <MessageCircle className="h-5 w-5" /> Chat on WhatsApp
-              </a>
-            </div>
-          </div>
-          <div className="order-first flex justify-center md:order-none">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt={settings.restaurantName} className="w-full max-w-[260px] drop-shadow-2xl md:max-w-md" />
-          </div>
+      <HeroStage>
+        <p className="inline-flex items-center gap-2 rounded-full border border-gold-300/30 bg-white/[0.03] px-3 py-1 text-xs font-medium text-gold-200">
+          <Clock className="h-3.5 w-3.5" aria-hidden />
+          {settings.openingHours}
+        </p>
+        <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+          <span className="sr-only">{settings.restaurantName}: </span>
+          Kottu, biriyani and grills, <span className="text-gold-300">cooked to order.</span>
+        </h1>
+        <p className="mt-5 max-w-[46ch] text-base leading-relaxed text-white/65 md:text-lg">
+          From sizzling cheese kottu to slow-cooked mutton biriyani. Browse {dishCount} dishes and order on WhatsApp in a few taps.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link href="/menu" className="btn-primary group px-6 py-3 text-base">
+            View menu
+            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden />
+          </Link>
+          <a href={wa} target="_blank" rel="noreferrer" className="btn-ghost px-6 py-3 text-base">
+            <MessageCircle className="h-5 w-5" aria-hidden /> Order on WhatsApp
+          </a>
         </div>
-      </section>
+      </HeroStage>
 
-      {/* How it works */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="grid gap-6 md:grid-cols-3">
-          {[
-            { icon: ChefHat, title: "Pick your dishes", text: "Browse the menu and add what you love to your cart." },
-            { icon: MessageCircle, title: "Send on WhatsApp", text: "Your order is sent to us on WhatsApp in one tap." },
-            { icon: Truck, title: "Enjoy your meal", text: "We confirm, cook fresh and deliver or keep it ready for pickup." },
-          ].map((s, i) => (
-            <div key={s.title} className="card p-6">
-              <div className="flex items-center gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-xl bg-gold-100 text-gold-700">
-                  <s.icon className="h-6 w-6" />
-                </span>
-                <span className="text-sm font-semibold text-gold-600">Step {i + 1}</span>
+      {/* Category ribbon: the one marquee on the page, a quick sense of the menu's breadth. */}
+      {withDishes.length > 0 && (
+        <div className="overflow-hidden border-y border-white/10 bg-black/30 py-5" aria-hidden>
+          <div className="flex w-max animate-marquee items-center">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex items-center">
+                {withDishes.map((c) => (
+                  <span key={c.id} className="flex items-center">
+                    <span className="px-6 font-display text-2xl font-semibold uppercase tracking-wide text-white/80 md:text-4xl">{c.name}</span>
+                    <Sparkle className="h-4 w-4 fill-gold-400 text-gold-400" />
+                  </span>
+                ))}
               </div>
-              <h3 className="mt-4 text-lg font-semibold">{s.title}</h3>
-              <p className="mt-1 text-sm text-ink-700/80">{s.text}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </section>
+      )}
 
-      {/* Featured */}
       {featured.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-widest text-gold-600">Chef&apos;s picks</p>
-              <h2 className="mt-1 font-display text-3xl font-bold md:text-4xl">Our bestsellers</h2>
-            </div>
-            <Link href="/menu" className="hidden text-sm font-semibold text-gold-700 hover:text-gold-800 sm:block">
-              View full menu →
-            </Link>
-          </div>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((d) => (
-              <DishCard key={d.id} dish={d} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Categories */}
-      {categories.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-16">
-          <h2 className="font-display text-3xl font-bold">Explore the menu</h2>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            {categories.map((c) => (
-              <Link key={c.id} href="/menu" className="card p-5 text-center transition hover:border-gold-300 hover:shadow-md">
-                <p className="font-semibold">{c.name}</p>
-                <p className="mt-1 text-xs text-ink-700/70">{c._count.items} dishes</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* About */}
-      <section id="about" className="scroll-mt-20 bg-gold-50">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:items-center">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-widest text-gold-600">Our story</p>
-            <h2 className="mt-1 font-display text-3xl font-bold md:text-4xl">Cooked with tradition, served with love</h2>
-            <p className="mt-4 text-ink-700">
-              At {settings.restaurantName}, every dish starts with fresh ingredients and spices roasted in-house. From sizzling
-              kottu to a comforting plate of rice &amp; curry, we bring you the flavours of home, whether you dine with us or order in.
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            {[
-              ["Fresh", "Cooked to order"],
-              ["Hygienic", "Clean kitchen"],
-              ["Fast", "Quick delivery"],
-            ].map(([t, s]) => (
-              <div key={t} className="card p-5">
-                <p className="font-display text-xl font-bold text-gold-700">{t}</p>
-                <p className="mt-1 text-xs text-ink-700/80">{s}</p>
+        <SignatureScroll
+          heading={
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold-400">Chef&apos;s picks</p>
+                <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-white md:text-5xl">Our bestsellers</h2>
               </div>
-            ))}
-          </div>
+              <Link href="/menu" className="group inline-flex items-center gap-1 text-sm font-semibold text-gold-300 hover:text-gold-200">
+                View menu <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden />
+              </Link>
+            </div>
+          }
+          items={featured.map((d) => (
+            <DishCard key={d.id} dish={d} />
+          ))}
+        />
+      )}
+
+      {/* How ordering works: heading pinned on the left while the steps scroll past. */}
+      <section className="mx-auto grid max-w-6xl gap-10 px-4 py-20 md:grid-cols-[1fr_1.2fr] md:gap-16 md:py-28">
+        <div className="md:sticky md:top-28 md:self-start">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-5xl">Order in three taps</h2>
+          <p className="mt-4 max-w-[40ch] text-white/65">No app, no sign-up. Your order goes straight to our kitchen on WhatsApp.</p>
         </div>
+        <ol className="relative ml-5 space-y-12 border-l border-gold-400/25 pl-8 md:space-y-20">
+          {[
+            { icon: UtensilsCrossed, title: "Pick your dishes", text: "Browse the menu, choose Normal or Full portions and add them to your cart." },
+            { icon: MessageCircle, title: "Send it on WhatsApp", text: "One tap opens WhatsApp with your order written out. Just press send." },
+            { icon: Bike, title: "Delivery or pickup", text: "We confirm on WhatsApp, cook it fresh and deliver it or keep it ready for you." },
+          ].map((s, i) => (
+            <li key={s.title} className="relative">
+              <Reveal delay={i * 0.05}>
+                <span className="absolute -left-[3.05rem] grid h-9 w-9 place-items-center rounded-full border border-gold-400/50 bg-ink-900 text-gold-300">
+                  <s.icon className="h-4 w-4" aria-hidden />
+                </span>
+                <h3 className="font-display text-xl font-semibold text-white md:text-2xl">{s.title}</h3>
+                <p className="mt-2 max-w-[48ch] text-white/60">{s.text}</p>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </section>
 
-      {/* Contact */}
-      <section id="contact" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16">
-        <h2 className="font-display text-3xl font-bold">Find us</h2>
-        <div className="mt-6 grid gap-5 md:grid-cols-3">
-          <div className="card flex gap-3 p-5">
-            <MapPin className="h-5 w-5 shrink-0 text-gold-600" />
-            <div>
-              <p className="font-semibold">Address</p>
-              <p className="mt-1 whitespace-pre-line text-sm text-ink-700/80">{settings.address || "Add your address in Admin → Settings"}</p>
-              {settings.mapUrl && (
-                <a href={settings.mapUrl} target="_blank" rel="noreferrer" className="mt-2 inline-block text-sm font-semibold text-gold-700">
-                  Open in Maps →
-                </a>
-              )}
-            </div>
+      {/* Categories: one large tile and three small ones, plus a tile for the full menu. */}
+      {bento.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 pb-20 md:pb-28">
+          <Reveal>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-5xl">Explore the menu</h2>
+          </Reveal>
+          <div className="mt-10 grid grid-cols-2 gap-4 md:auto-rows-[190px] md:grid-cols-4">
+            {bento.map((c, i) => (
+              <Reveal key={c.id} delay={i * 0.06} className={cn(i === 0 && "col-span-2 md:row-span-2")}>
+                <TiltCard className="rounded-2xl">
+                  <Link
+                    href={`/menu?category=${c.slug}`}
+                    className={cn(
+                      "relative flex h-full min-h-[150px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 p-5 transition hover:border-gold-300/50",
+                      i === 0
+                        ? "min-h-[260px] bg-[radial-gradient(circle_at_75%_25%,rgba(224,180,74,0.35),transparent_55%),linear-gradient(160deg,#1c1710,#0b0b0b)] md:p-8"
+                        : i === 1
+                          ? "bg-[linear-gradient(140deg,#17140f,#0d0d0d)]"
+                          : i === 2
+                            ? "bg-[radial-gradient(circle_at_20%_10%,rgba(224,180,74,0.18),transparent_60%),#0e0e0e]"
+                            : "bg-[linear-gradient(200deg,#1a1611,#0c0c0c_70%)]",
+                    )}
+                  >
+                    {i === 0 && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src="/logo-mark.png" alt="" className="pointer-events-none absolute -right-6 -top-4 w-56 opacity-25 md:w-80" />
+                    )}
+                    <span className="relative font-display text-xl font-semibold text-white md:text-2xl">{c.name}</span>
+                    <span className="relative mt-1 text-sm text-white/60">
+                      {c._count.items} dishes
+                      {c.items[0] && <> · from {formatPrice(c.items[0].price)}</>}
+                    </span>
+                    <ArrowUpRight className="absolute right-4 top-4 h-5 w-5 text-gold-300 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+                  </Link>
+                </TiltCard>
+              </Reveal>
+            ))}
+            <Reveal delay={0.25}>
+              <Link
+                href="/menu"
+                className="group flex h-full min-h-[150px] flex-col justify-between rounded-2xl bg-gold-400 p-5 text-ink-900 transition hover:bg-gold-300 active:scale-[0.99]"
+              >
+                <span className="font-display text-xl font-semibold">View menu</span>
+                <span className="flex items-end justify-between">
+                  <span className="text-sm font-medium">All {withDishes.length} categories</span>
+                  <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" aria-hidden />
+                </span>
+              </Link>
+            </Reveal>
           </div>
-          <div className="card flex gap-3 p-5">
-            <Clock className="h-5 w-5 shrink-0 text-gold-600" />
-            <div>
-              <p className="font-semibold">Opening hours</p>
-              <p className="mt-1 text-sm text-ink-700/80">{settings.openingHours}</p>
-            </div>
+        </section>
+      )}
+
+      <div id="about" className="scroll-mt-16">
+        <ZoomStory>
+          <div className="mx-auto max-w-3xl px-4 text-center">
+            <Reveal>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold-400">Our story</p>
+              <h2 className="mt-3 font-display text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl">
+                Cooked with tradition, served with love
+              </h2>
+              <p className="mx-auto mt-5 max-w-[60ch] text-white/65 md:text-lg">
+                At {settings.restaurantName}, every dish starts with fresh ingredients and spices roasted in-house. From kottu on the
+                hot plate to biriyani sharing platters, we cook the flavours of home, whether you dine with us or order in.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <dl className="mx-auto mt-12 grid max-w-xl grid-cols-2 gap-8">
+                <div>
+                  <dt className="text-sm text-white/55">Dishes on the menu</dt>
+                  <dd className="mt-1 font-display text-4xl font-bold text-gold-300 md:text-5xl">{dishCount}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-white/55">Categories</dt>
+                  <dd className="mt-1 font-display text-4xl font-bold text-gold-300 md:text-5xl">{withDishes.length}</dd>
+                </div>
+              </dl>
+            </Reveal>
           </div>
-          <div className="card flex gap-3 p-5">
-            <Phone className="h-5 w-5 shrink-0 text-gold-600" />
-            <div>
-              <p className="font-semibold">Contact</p>
-              <a href={wa} target="_blank" rel="noreferrer" className="mt-1 block text-sm text-ink-700/80 hover:text-gold-700">
-                WhatsApp +{waDigits(settings.whatsappNumber)}
+        </ZoomStory>
+      </div>
+
+      {/* Visit and order */}
+      <section id="contact" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-8">
+        <div className="grid overflow-hidden rounded-2xl border border-white/10 md:grid-cols-[1.3fr_1fr]">
+          <div className="space-y-6 p-6 md:p-10">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-white md:text-4xl">Visit or order</h2>
+            <ul className="space-y-5">
+              <li className="flex gap-4">
+                <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-gold-300" aria-hidden />
+                <div>
+                  <p className="font-medium text-white">Address</p>
+                  <p className="mt-0.5 whitespace-pre-line text-white/60">{settings.address || "Address coming soon"}</p>
+                  {settings.mapUrl && (
+                    <a href={settings.mapUrl} target="_blank" rel="noreferrer" className="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-gold-300 hover:text-gold-200">
+                      Open in Maps <ArrowUpRight className="h-4 w-4" aria-hidden />
+                    </a>
+                  )}
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <Clock className="mt-0.5 h-5 w-5 shrink-0 text-gold-300" aria-hidden />
+                <div>
+                  <p className="font-medium text-white">Opening hours</p>
+                  <p className="mt-0.5 text-white/60">{settings.openingHours}</p>
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <Phone className="mt-0.5 h-5 w-5 shrink-0 text-gold-300" aria-hidden />
+                <div>
+                  <p className="font-medium text-white">Call us</p>
+                  <a href={`tel:+${normalizePhone(settings.phone || settings.whatsappNumber)}`} className="mt-0.5 block text-white/60 hover:text-white">
+                    {settings.phone || `+${waDigits(settings.whatsappNumber)}`}
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className="relative flex flex-col justify-end overflow-hidden bg-[radial-gradient(circle_at_80%_10%,rgba(224,180,74,0.3),transparent_60%),linear-gradient(160deg,#1b160e,#0b0b0b)] p-6 md:p-10">
+            <p className="font-display text-2xl font-semibold text-white md:text-3xl">Hungry already?</p>
+            <p className="mt-2 text-white/65">Send your order and we will confirm it on WhatsApp.</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a href={wa} target="_blank" rel="noreferrer" className="btn bg-[#25D366] px-5 py-3 text-ink-900 hover:bg-[#3ee07c] active:scale-[0.98]">
+                <MessageCircle className="h-5 w-5" aria-hidden /> Order on WhatsApp
               </a>
-              {settings.phone && (
-                <a href={`tel:${settings.phone}`} className="block text-sm text-ink-700/80 hover:text-gold-700">{settings.phone}</a>
-              )}
+              <Link href="/menu" className="btn-ghost px-5 py-3">
+                View menu
+              </Link>
             </div>
           </div>
         </div>
