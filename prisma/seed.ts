@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { FEATURED, MENU, slugify } from "./menu-data";
+import { DISH_IMAGES, FEATURED, MENU, slugify } from "./menu-data";
 
 const prisma = new PrismaClient();
 
@@ -36,7 +36,8 @@ async function main() {
         sortOrder: ii,
         categoryId: cat.id,
       };
-      await prisma.menuItem.upsert({ where: { slug: slugify(item.name) }, update: data, create: { ...data, slug: slugify(item.name) } });
+      const slug = slugify(item.name);
+      await prisma.menuItem.upsert({ where: { slug }, update: data, create: { ...data, slug, image: DISH_IMAGES[slug] ?? "" } });
       count++;
     }
   }

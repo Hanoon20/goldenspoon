@@ -63,7 +63,7 @@ export function MenuItemForm({ item, categories }: Props) {
         </div>
         <div>
           <label className="label" htmlFor="image">Image URL</label>
-          <input id="image" name="image" type="url" placeholder="https://…" className="input" value={image} onChange={(e) => setImage(e.target.value)} />
+          <input id="image" name="image" type="text" inputMode="url" placeholder="https://…" className="input" value={image} onChange={(e) => setImage(e.target.value)} />
           <p className="mt-1 text-xs text-ink-700/60">Paste a link to the dish photo (e.g. from Cloudinary, Imgur or your Facebook page).</p>
         </div>
         <div className="flex flex-wrap gap-6 text-sm">
