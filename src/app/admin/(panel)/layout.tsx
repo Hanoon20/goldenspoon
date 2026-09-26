@@ -1,16 +1,20 @@
 import { Sidebar } from "@/components/admin/Sidebar";
 import { requireAdmin } from "@/lib/auth";
+import { todayInColombo } from "@/lib/booking";
 import { db } from "@/lib/db";
 
 export const metadata = { title: "Admin" };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const admin = await requireAdmin();
-  const newOrders = await db.order.count({ where: { status: "NEW" } });
+  const [newOrders, newBookings] = await Promise.all([
+    db.order.count({ where: { status: "NEW" } }),
+    db.reservation.count({ where: { status: "PENDING", date: { gte: todayInColombo() } } }),
+  ]);
 
   return (
     <div className="flex min-h-screen flex-col bg-ink-50 text-ink-900 md:flex-row">
-      <Sidebar adminName={admin.name || admin.email} newOrders={newOrders} />
+      <Sidebar adminName={admin.name || admin.email} newOrders={newOrders} newBookings={newBookings} />
       <div className="flex-1 overflow-x-hidden p-4 md:p-8">{children}</div>
     </div>
   );

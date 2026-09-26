@@ -23,7 +23,8 @@ export function Footer({ settings }: { settings: Setting }) {
           </a>
           {settings.phone && <a className="block hover:text-gold-300" href={`tel:${settings.phone}`}>Call: {settings.phone}</a>}
           {settings.email && <a className="block hover:text-gold-300" href={`mailto:${settings.email}`}>{settings.email}</a>}
-          <Link href="/menu" className="mt-3 inline-block text-gold-300 hover:text-gold-200">View menu</Link>
+          <Link href="/menu" className="mt-3 block text-gold-300 hover:text-gold-200">View menu</Link>
+          <Link href="/book" className="mt-1 block text-gold-300 hover:text-gold-200">Book a table</Link>
         </div>
       </div>
       <div className="border-t border-white/10 py-4 text-center text-xs text-ink-200/70">

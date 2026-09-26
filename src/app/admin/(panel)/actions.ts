@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { OrderStatus, Prisma } from "@prisma/client";
+import { OrderStatus, Prisma, ReservationStatus } from "@prisma/client";
 import { db } from "@/lib/db";
 import { destroySession, requireAdmin } from "@/lib/auth";
 import { normalizePhone, slugify } from "@/lib/utils";
@@ -47,6 +47,16 @@ export async function updateOrderStatus(fd: FormData) {
   const id = str(fd, "id");
   const status = z.enum(OrderStatus).parse(str(fd, "status"));
   await db.order.update({ where: { id }, data: { status } });
+  revalidatePath("/admin", "layout");
+}
+
+// ---------- Table bookings ----------
+
+export async function updateReservationStatus(fd: FormData) {
+  await requireAdmin();
+  const id = str(fd, "id");
+  const status = z.enum(ReservationStatus).parse(str(fd, "status"));
+  await db.reservation.update({ where: { id }, data: { status } });
   revalidatePath("/admin", "layout");
 }
 
@@ -168,7 +178,10 @@ const settingsSchema = z.object({
   deliveryFee: z.coerce.number().int().min(0).max(10000),
   minOrder: z.coerce.number().int().min(0).max(100000),
   isOpen: z.boolean(),
-});
+  acceptBookings: z.boolean(),
+  bookingStart: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "First booking time must look like 11:00"),
+  bookingEnd: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Last booking time must look like 21:30"),
+}).refine((s) => s.bookingStart <= s.bookingEnd, { message: "Last booking time must be after the first one" });
 
 export async function saveSettings(_prev: FormState, fd: FormData): Promise<FormState> {
   await requireAdmin();
@@ -184,6 +197,9 @@ export async function saveSettings(_prev: FormState, fd: FormData): Promise<Form
     deliveryFee: str(fd, "deliveryFee") || 0,
     minOrder: str(fd, "minOrder") || 0,
     isOpen: bool(fd, "isOpen"),
+    acceptBookings: bool(fd, "acceptBookings"),
+    bookingStart: str(fd, "bookingStart"),
+    bookingEnd: str(fd, "bookingEnd"),
   });
   if (!parsed.success) return { error: parsed.error.issues[0].message };
   await db.setting.upsert({ where: { id: 1 }, update: parsed.data, create: { id: 1, ...parsed.data } });

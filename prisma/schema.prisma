@@ -112,4 +112,53 @@ model Setting {
   deliveryFee    Int     @default(250)
   minOrder       Int     @default(0)
   isOpen         Boolean @default(true)
+  acceptBookings Boolean @default(true)
+  bookingStart   String  @default("11:00") // first table-booking time slot, 24h "HH:MM"
+  bookingEnd     String  @default("21:30") // last table-booking time slot
+}
+
+enum SeatingType {
+  NORMAL
+  FAMILY_ROOM
+  MAJLIS
+}
+
+enum EventType {
+  CASUAL
+  MEETING
+  PARTY
+  BIRTHDAY
+  ANNIVERSARY
+  FAMILY_GATHERING
+  OTHER
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  SEATED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+// Table bookings. Date and time are stored as the restaurant's local (Sri Lanka) values,
+// "YYYY-MM-DD" and "HH:MM", so they never shift with server time zones.
+model Reservation {
+  id           String            @id @default(cuid())
+  bookingNo    Int               @unique @default(autoincrement())
+  customerName String
+  phone        String
+  date         String
+  time         String
+  guests       Int
+  seating      SeatingType
+  eventType    EventType
+  note         String            @default("")
+  status       ReservationStatus @default(PENDING)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([date])
+  @@index([status])
 }
