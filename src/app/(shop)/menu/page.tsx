@@ -4,9 +4,10 @@ import { db } from "@/lib/db";
 
 export const metadata: Metadata = { title: "Menu" };
 
-export default async function MenuPage() {
+export default async function MenuPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const { category } = await searchParams;
   const [categories, dishes] = await Promise.all([
-    db.category.findMany({ orderBy: [{ sortOrder: "asc" }, { name: "asc" }], select: { id: true, name: true } }),
+    db.category.findMany({ orderBy: [{ sortOrder: "asc" }, { name: "asc" }], select: { id: true, name: true, slug: true } }),
     db.menuItem.findMany({
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
       select: {
@@ -18,12 +19,14 @@ export default async function MenuPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-10">
-      <div className="py-10 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-gold-600">Our menu</p>
-        <h1 className="mt-2 font-display text-4xl font-bold md:text-5xl">Made fresh, every day</h1>
-        <p className="mt-3 text-ink-700/80">Add dishes to your cart and send the order to us on WhatsApp.</p>
+      <div className="relative py-10 md:py-14">
+        <div aria-hidden className="pointer-events-none absolute -left-24 -top-10 h-64 w-64 rounded-full bg-gold-500/20 blur-3xl" />
+        <h1 className="relative font-display text-4xl font-bold tracking-tight text-white md:text-6xl">Our menu</h1>
+        <p className="relative mt-3 max-w-[55ch] text-white/65">
+          {dishes.length} dishes, cooked fresh every day. Add what you like and send your order on WhatsApp.
+        </p>
       </div>
-      <MenuBrowser categories={categories} dishes={dishes} />
+      <MenuBrowser categories={categories} dishes={dishes} initialCategory={categories.find((c) => c.slug === category)?.id} />
     </div>
   );
 }

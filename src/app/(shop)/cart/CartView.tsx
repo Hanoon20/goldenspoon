@@ -28,15 +28,15 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
     return (
       <div className="mx-auto max-w-lg px-4 py-20 text-center">
         <CheckCircle2 className="mx-auto h-16 w-16 text-green-600" />
-        <h1 className="mt-4 font-display text-3xl font-bold">Order #{done.orderNo} created!</h1>
-        <p className="mt-3 text-ink-700/80">
+        <h1 className="mt-4 font-display text-3xl font-bold text-white">Order #{done.orderNo} created!</h1>
+        <p className="mt-3 text-white/65">
           Please send the message in WhatsApp to confirm your order. We&apos;ll reply there with the confirmation.
         </p>
-        <a href={done.whatsappUrl} target="_blank" rel="noreferrer" className="btn mt-8 bg-[#25D366] px-6 py-3 text-base text-white hover:bg-[#1ebe5b]">
+        <a href={done.whatsappUrl} target="_blank" rel="noreferrer" className="btn mt-8 bg-[#25D366] px-6 py-3 text-base text-ink-900 hover:bg-[#3ee07c] active:scale-[0.98]">
           <MessageCircle className="h-5 w-5" /> Open WhatsApp
         </a>
         <div className="mt-4">
-          <Link href="/menu" className="text-sm font-semibold text-gold-700">Back to menu</Link>
+          <Link href="/menu" className="text-sm font-semibold text-gold-300">Back to menu</Link>
         </div>
       </div>
     );
@@ -45,9 +45,9 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-4 py-24 text-center">
-        <ShoppingBag className="mx-auto h-14 w-14 text-ink-200" />
-        <h1 className="mt-4 font-display text-3xl font-bold">Your cart is empty</h1>
-        <p className="mt-2 text-ink-700/80">Looks like you haven&apos;t added anything yet.</p>
+        <ShoppingBag className="mx-auto h-14 w-14 text-white/20" />
+        <h1 className="mt-4 font-display text-3xl font-bold text-white">Your cart is empty</h1>
+        <p className="mt-2 text-white/65">Looks like you haven&apos;t added anything yet.</p>
         <Link href="/menu" className="btn-primary mt-8 px-6 py-3">Browse the menu</Link>
       </div>
     );
@@ -79,11 +79,11 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:py-10">
-      <h1 className="font-display text-3xl font-bold sm:text-4xl">Your cart</h1>
+      <h1 className="font-display text-3xl font-bold text-white sm:text-4xl">Your cart</h1>
       {/* min-w-0 lets grid children shrink below their content width on small screens */}
       <div className="mt-6 grid gap-6 sm:mt-8 lg:grid-cols-[1fr_400px] lg:gap-8 [&>*]:min-w-0">
         {/* Items */}
-        <div className="card divide-y divide-ink-100">
+        <div className="surface h-fit divide-y divide-white/10">
           {items.map((i) => {
             const what = i.portionLabel ? `${i.name} (${i.portionLabel})` : i.name;
             return (
@@ -98,28 +98,28 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
                       <p className="break-words font-semibold leading-snug">
                         {i.name}
                         {i.portionLabel && (
-                          <span className="ml-1.5 inline-block rounded bg-gold-100 px-1.5 py-0.5 align-middle text-xs font-semibold text-gold-800">
+                          <span className="ml-1.5 inline-block rounded bg-gold-400/15 px-1.5 py-0.5 align-middle text-xs font-semibold text-gold-200">
                             {i.portionLabel}
                           </span>
                         )}
                       </p>
-                      <p className="mt-0.5 whitespace-nowrap text-sm text-ink-700/70">{formatPrice(i.price)} each</p>
+                      <p className="mt-0.5 whitespace-nowrap text-sm text-white/60">{formatPrice(i.price)} each</p>
                     </div>
                     <button
                       onClick={() => remove(i.key)}
-                      className="-mr-1 -mt-1 shrink-0 rounded-lg p-2 text-ink-700/50 hover:bg-red-50 hover:text-red-600"
+                      className="-mr-1 -mt-1 shrink-0 rounded-lg p-2 text-white/50 hover:bg-red-500/10 hover:text-red-400"
                       aria-label={`Remove ${what}`}
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                   <div className="flex items-center justify-between gap-2 min-[400px]:pl-6">
-                    <div className="flex items-center rounded-lg border border-ink-200">
-                      <button onClick={() => setQty(i.key, i.qty - 1)} className="p-2.5 hover:bg-ink-50" aria-label={`Remove one ${what}`}>
+                    <div className="flex items-center rounded-lg border border-white/15">
+                      <button onClick={() => setQty(i.key, i.qty - 1)} className="p-2.5 hover:bg-white/5" aria-label={`Remove one ${what}`}>
                         <Minus className="h-4 w-4" />
                       </button>
                       <span className="min-w-7 text-center text-sm font-bold">{i.qty}</span>
-                      <button onClick={() => setQty(i.key, i.qty + 1)} className="p-2.5 hover:bg-ink-50" aria-label={`Add one more ${what}`}>
+                      <button onClick={() => setQty(i.key, i.qty + 1)} className="p-2.5 hover:bg-white/5" aria-label={`Add one more ${what}`}>
                         <Plus className="h-4 w-4" />
                       </button>
                     </div>
@@ -132,14 +132,14 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
         </div>
 
         {/* Checkout */}
-        <form onSubmit={submit} className="card h-fit space-y-4 p-5 sm:p-6 lg:sticky lg:top-24">
-          <div className="grid grid-cols-2 gap-2 rounded-xl bg-ink-50 p-1">
+        <form onSubmit={submit} className="surface h-fit space-y-4 p-5 sm:p-6 lg:sticky lg:top-24">
+          <div className="grid grid-cols-2 gap-2 rounded-xl bg-white/5 p-1">
             {(["DELIVERY", "TAKEAWAY"] as const).map((t) => (
               <button
                 key={t}
                 type="button"
                 onClick={() => setType(t)}
-                className={cn("rounded-lg py-2 text-sm font-semibold transition", type === t ? "bg-white shadow" : "text-ink-700/70")}
+                className={cn("rounded-lg py-2 text-sm font-semibold transition", type === t ? "bg-gold-400 text-ink-900 shadow" : "text-white/65 hover:text-white")}
               >
                 {t === "DELIVERY" ? "Delivery" : "Takeaway"}
               </button>
@@ -147,39 +147,39 @@ export function CartView({ deliveryFee, minOrder, isOpen }: Props) {
           </div>
 
           <div>
-            <label className="label" htmlFor="name">Name</label>
-            <input id="name" required className="input" value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} />
+            <label className="field-label" htmlFor="name">Name</label>
+            <input id="name" required className="field" value={form.customerName} onChange={(e) => setForm({ ...form, customerName: e.target.value })} />
           </div>
           <div>
-            <label className="label" htmlFor="phone">Phone (WhatsApp)</label>
-            <input id="phone" required type="tel" inputMode="tel" placeholder="077 123 4567" className="input" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+            <label className="field-label" htmlFor="phone">Phone (WhatsApp)</label>
+            <input id="phone" required type="tel" inputMode="tel" placeholder="077 123 4567" className="field" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
           </div>
           {type === "DELIVERY" && (
             <div>
-              <label className="label" htmlFor="address">Delivery address</label>
-              <textarea id="address" required rows={3} className="input" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+              <label className="field-label" htmlFor="address">Delivery address</label>
+              <textarea id="address" required rows={3} className="field" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
             </div>
           )}
           <div>
-            <label className="label" htmlFor="note">Note (optional)</label>
-            <input id="note" placeholder="Less spicy, no onion…" className="input" value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} />
+            <label className="field-label" htmlFor="note">Note (optional)</label>
+            <input id="note" placeholder="Less spicy, no onion…" className="field" value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} />
           </div>
 
-          <dl className="space-y-1.5 border-t border-ink-100 pt-4 text-sm">
+          <dl className="space-y-1.5 border-t border-white/10 pt-4 text-sm">
             <div className="flex justify-between"><dt>Subtotal</dt><dd>{formatPrice(subtotal)}</dd></div>
             {type === "DELIVERY" && <div className="flex justify-between"><dt>Delivery</dt><dd>{fee ? formatPrice(fee) : "Free"}</dd></div>}
-            <div className="flex justify-between border-t border-ink-100 pt-2 text-base font-bold"><dt>Total</dt><dd>{formatPrice(total)}</dd></div>
+            <div className="flex justify-between border-t border-white/10 pt-2 text-base font-bold"><dt>Total</dt><dd>{formatPrice(total)}</dd></div>
           </dl>
 
-          {belowMin && <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800">Minimum order value is {formatPrice(minOrder)}.</p>}
-          {!isOpen && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">We&apos;re closed right now and not taking orders.</p>}
-          {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+          {belowMin && <p className="rounded-lg bg-amber-400/10 p-3 text-sm text-amber-200">Minimum order value is {formatPrice(minOrder)}.</p>}
+          {!isOpen && <p className="rounded-lg bg-red-500/10 p-3 text-sm text-red-300">We&apos;re closed right now and not taking orders.</p>}
+          {error && <p className="rounded-lg bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
 
-          <button disabled={pending || belowMin || !isOpen} className="btn w-full bg-[#25D366] py-3 text-base text-white hover:bg-[#1ebe5b]">
+          <button disabled={pending || belowMin || !isOpen} className="btn w-full bg-[#25D366] py-3 text-base text-ink-900 hover:bg-[#3ee07c] active:scale-[0.98]">
             <MessageCircle className="h-5 w-5" />
             {pending ? "Placing order…" : "Order on WhatsApp"}
           </button>
-          <p className="text-center text-xs text-ink-700/60">Pay on delivery or at pickup. We&apos;ll confirm your order on WhatsApp.</p>
+          <p className="text-center text-xs text-white/55">Pay on delivery or at pickup. We&apos;ll confirm your order on WhatsApp.</p>
         </form>
       </div>
     </div>

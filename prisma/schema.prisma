@@ -108,7 +108,7 @@ model Setting {
   email          String  @default("")
   address        String  @default("")
   mapUrl         String  @default("")
-  openingHours   String  @default("10:00 AM – 10:00 PM, every day")
+  openingHours   String  @default("10:00 AM - 10:00 PM, every day")
   deliveryFee    Int     @default(250)
   minOrder       Int     @default(0)
   isOpen         Boolean @default(true)
