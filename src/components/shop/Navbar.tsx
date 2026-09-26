@@ -49,6 +49,15 @@ export function Navbar({ restaurantName }: { restaurantName: string }) {
         </div>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/book"
+            className={cn(
+              "hidden rounded-lg border px-3.5 py-1.5 text-sm font-semibold transition md:inline-flex",
+              pathname === "/book" ? "border-gold-400 bg-gold-400 text-ink-900" : "border-gold-300/50 text-gold-200 hover:bg-gold-400 hover:text-ink-900",
+            )}
+          >
+            Book a table
+          </Link>
           <Link href="/cart" className="relative rounded-full p-2 hover:bg-white/10" aria-label="Cart">
             <ShoppingBag className="h-6 w-6" />
             {count > 0 && (
@@ -70,6 +79,9 @@ export function Navbar({ restaurantName }: { restaurantName: string }) {
               {l.label}
             </Link>
           ))}
+          <Link href="/book" className="mt-2 block rounded-lg bg-gold-400 px-3 py-2 text-center font-semibold text-ink-900" onClick={() => setOpen(false)}>
+            Book a table
+          </Link>
         </div>
       )}
     </header>

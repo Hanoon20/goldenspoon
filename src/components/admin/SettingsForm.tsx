@@ -35,6 +35,18 @@ export function SettingsForm({ settings }: { settings: Setting }) {
         {field("deliveryFee", "Delivery fee (Rs.)", { type: "number", min: 0 })}
         {field("minOrder", "Minimum order (Rs.)", { type: "number", min: 0 })}
       </div>
+      <div className="rounded-xl border border-ink-100 p-4">
+        <p className="font-semibold">Table bookings</p>
+        <label className="mt-3 flex items-center gap-2 text-sm font-medium">
+          <input type="checkbox" name="acceptBookings" defaultChecked={settings.acceptBookings} className="h-4 w-4 accent-gold-500" />
+          Accept table bookings on the website
+        </label>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          {field("bookingStart", "First booking time (24h)", { type: "time", step: 1800 })}
+          {field("bookingEnd", "Last booking time (24h)", { type: "time", step: 1800 })}
+        </div>
+        <p className="mt-2 text-xs text-ink-700/70">Customers can pick 30-minute slots between these times.</p>
+      </div>
       <label className="flex items-center gap-2 text-sm font-medium">
         <input type="checkbox" name="isOpen" defaultChecked={settings.isOpen} className="h-4 w-4 accent-gold-500" />
         Accepting orders now (untick to close the shop temporarily)

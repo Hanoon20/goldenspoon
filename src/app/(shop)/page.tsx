@@ -234,14 +234,14 @@ export default async function HomePage() {
             </ul>
           </div>
           <div className="relative flex flex-col justify-end overflow-hidden bg-[radial-gradient(circle_at_80%_10%,rgba(224,180,74,0.3),transparent_60%),linear-gradient(160deg,#1b160e,#0b0b0b)] p-6 md:p-10">
-            <p className="font-display text-2xl font-semibold text-white md:text-3xl">Hungry already?</p>
-            <p className="mt-2 text-white/65">Send your order and we will confirm it on WhatsApp.</p>
+            <p className="font-display text-2xl font-semibold text-white md:text-3xl">Order in or book a table</p>
+            <p className="mt-2 text-white/65">Send your order or booking and we will confirm it on WhatsApp.</p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a href={wa} target="_blank" rel="noreferrer" className="btn bg-[#25D366] px-5 py-3 text-ink-900 hover:bg-[#3ee07c] active:scale-[0.98]">
                 <MessageCircle className="h-5 w-5" aria-hidden /> Order on WhatsApp
               </a>
-              <Link href="/menu" className="btn-ghost px-5 py-3">
-                View menu
+              <Link href="/book" className="btn-ghost px-5 py-3">
+                Book a table
               </Link>
             </div>
           </div>

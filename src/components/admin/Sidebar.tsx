@@ -2,19 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ListOrdered, LogOut, Settings, Tags, UtensilsCrossed, ExternalLink } from "lucide-react";
+import { CalendarDays, LayoutDashboard, ListOrdered, LogOut, Settings, Tags, UtensilsCrossed, ExternalLink } from "lucide-react";
 import { logout } from "@/app/admin/(panel)/actions";
 import { cn } from "@/lib/utils";
 
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Orders", icon: ListOrdered },
+  { href: "/admin/reservations", label: "Bookings", icon: CalendarDays },
   { href: "/admin/menu", label: "Menu", icon: UtensilsCrossed },
   { href: "/admin/categories", label: "Categories", icon: Tags },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
-export function Sidebar({ adminName, newOrders }: { adminName: string; newOrders: number }) {
+export function Sidebar({ adminName, newOrders, newBookings }: { adminName: string; newOrders: number; newBookings: number }) {
   const pathname = usePathname();
   const isActive = (href: string) => (href === "/admin" ? pathname === href : pathname.startsWith(href));
 
@@ -39,6 +40,9 @@ export function Sidebar({ adminName, newOrders }: { adminName: string; newOrders
             {n.label}
             {n.href === "/admin/orders" && newOrders > 0 && (
               <span className="ml-auto rounded-full bg-red-500 px-2 text-xs font-bold text-white">{newOrders}</span>
+            )}
+            {n.href === "/admin/reservations" && newBookings > 0 && (
+              <span className="ml-auto rounded-full bg-red-500 px-2 text-xs font-bold text-white">{newBookings}</span>
             )}
           </Link>
         ))}
