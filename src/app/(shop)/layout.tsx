@@ -16,7 +16,13 @@ export default async function ShopLayout({ children }: { children: React.ReactNo
         <style>{"#intro{display:none}"}</style>
       </noscript>
       <IntroSplash />
-      <Navbar restaurantName={settings.restaurantName} />
+      <Navbar
+        restaurantName={settings.restaurantName}
+        whatsappNumber={settings.whatsappNumber}
+        phone={settings.phone}
+        openingHours={settings.openingHours}
+        isOpen={settings.isOpen}
+      />
       {!settings.isOpen && (
         <div className="bg-red-600 px-4 py-2 text-center text-sm font-medium text-white">
           We&apos;re closed right now and not taking orders. Opening hours: {settings.openingHours}
