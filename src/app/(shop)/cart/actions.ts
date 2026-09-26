@@ -42,7 +42,7 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
   const data = parsed.data;
 
   const settings = await getSettings();
-  if (!settings.isOpen) return { ok: false, error: "Sorry, we are closed right now and not taking orders." };
+  if (!settings.openNow) return { ok: false, error: "Sorry, we are closed right now and not taking orders." };
 
   // Merge duplicate lines (same dish + portion), then load real prices from the database. Never trust client prices.
   const qtyByLine = new Map<string, { id: string; portion: "base" | "full"; qty: number }>();

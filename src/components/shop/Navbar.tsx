@@ -20,15 +20,16 @@ type Props = {
   restaurantName: string;
   whatsappNumber: string;
   phone: string;
-  openingHours: string;
-  isOpen: boolean;
+  hoursText: string;
+  openNow: boolean;
+  nextChange: string;
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 // The menu grows out of the hamburger button (top-right corner of the header).
 const ORIGIN = "calc(100% - 2.25rem) 2rem";
 
-export function Navbar({ restaurantName, whatsappNumber, phone, openingHours, isOpen }: Props) {
+export function Navbar({ restaurantName, whatsappNumber, phone, hoursText, openNow, nextChange }: Props) {
   const pathname = usePathname();
   const items = useCart((s) => s.items);
   const reduce = useReducedMotionSafe();
@@ -231,9 +232,14 @@ export function Navbar({ restaurantName, whatsappNumber, phone, openingHours, is
                 <p className="mt-6 flex items-start gap-2.5 text-sm text-white/60">
                   <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold-300" aria-hidden />
                   <span>
-                    <span className={cn("font-semibold", isOpen ? "text-green-400" : "text-red-400")}>{isOpen ? "Open now" : "Closed now"}</span>
-                    <span className="mx-1.5 text-white/30">|</span>
-                    {openingHours}
+                    <span className={cn("font-semibold", openNow ? "text-green-400" : "text-red-400")}>{openNow ? "Open now" : "Closed now"}</span>
+                    {nextChange && (
+                      <>
+                        <span className="mx-1.5 text-white/30">|</span>
+                        {nextChange}
+                      </>
+                    )}
+                    <span className="block text-white/45">{hoursText}</span>
                   </span>
                 </p>
               </motion.div>
