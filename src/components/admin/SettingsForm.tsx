@@ -24,7 +24,6 @@ export function SettingsForm({ settings }: { settings: Setting }) {
         {field("whatsappNumber", "WhatsApp number (orders go here)", { required: true, placeholder: "94771234567" })}
         {field("phone", "Phone")}
         {field("email", "Email", { type: "email" })}
-        {field("openingHours", "Opening hours")}
       </div>
       <div>
         <label className="label" htmlFor="address">Address</label>
@@ -47,10 +46,27 @@ export function SettingsForm({ settings }: { settings: Setting }) {
         </div>
         <p className="mt-2 text-xs text-ink-700/70">Customers can pick 30-minute slots between these times.</p>
       </div>
-      <label className="flex items-center gap-2 text-sm font-medium">
-        <input type="checkbox" name="isOpen" defaultChecked={settings.isOpen} className="h-4 w-4 accent-gold-500" />
-        Accepting orders now (untick to close the shop temporarily)
-      </label>
+      <div className="rounded-xl border border-ink-100 p-4">
+        <p className="font-semibold">Opening hours</p>
+        <label className="mt-3 flex items-center gap-2 text-sm font-medium">
+          <input type="checkbox" name="autoHours" defaultChecked={settings.autoHours} className="h-4 w-4 accent-gold-500" />
+          Open and close the shop automatically at these times
+        </label>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          {field("openTime", "Opening time", { type: "time" })}
+          {field("closeTime", "Closing time", { type: "time" })}
+        </div>
+        <p className="mt-2 text-xs text-ink-700/70">
+          Uses Sri Lanka time. A closing time after midnight (for example 1:00 AM) works too. Same time for both means open 24 hours.
+        </p>
+        <div className="mt-3">
+          {field("openingHours", "Opening hours text (shown when automatic hours are off)")}
+        </div>
+        <label className="mt-4 flex items-center gap-2 text-sm font-medium">
+          <input type="checkbox" name="isOpen" defaultChecked={settings.isOpen} className="h-4 w-4 accent-gold-500" />
+          Accepting orders (untick to close the shop temporarily, even during opening hours)
+        </label>
+      </div>
       <FormMessage state={state} />
       <button disabled={pending} className="btn-primary">{pending ? "Saving…" : "Save settings"}</button>
     </form>

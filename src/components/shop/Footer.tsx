@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { Setting } from "@prisma/client";
+import type { ShopStatus } from "@/lib/hours";
 import { waDigits } from "@/lib/utils";
 
-export function Footer({ settings }: { settings: Setting }) {
+export function Footer({ settings }: { settings: Setting & ShopStatus }) {
   return (
     <footer className="mt-20 border-t border-white/10 bg-black/40 text-white/70">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-3">
@@ -14,7 +15,7 @@ export function Footer({ settings }: { settings: Setting }) {
         <div className="text-sm">
           <p className="mb-2 font-semibold text-white">Visit us</p>
           {settings.address && <p className="whitespace-pre-line">{settings.address}</p>}
-          <p className="mt-2">{settings.openingHours}</p>
+          <p className="mt-2">{settings.hoursText}</p>
         </div>
         <div className="text-sm">
           <p className="mb-2 font-semibold text-white">Order & enquiries</p>

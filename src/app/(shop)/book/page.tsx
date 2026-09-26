@@ -21,7 +21,7 @@ export default async function BookPage() {
         <ul className="relative mt-8 space-y-4 text-sm">
           <li className="flex gap-3">
             <Clock className="h-5 w-5 shrink-0 text-gold-300" aria-hidden />
-            <span className="text-white/70">{settings.openingHours}</span>
+            <span className="text-white/70">{settings.hoursText}</span>
           </li>
           <li className="flex gap-3">
             <Users className="h-5 w-5 shrink-0 text-gold-300" aria-hidden />

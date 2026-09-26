@@ -111,7 +111,10 @@ model Setting {
   openingHours   String  @default("10:00 AM - 10:00 PM, every day")
   deliveryFee    Int     @default(250)
   minOrder       Int     @default(0)
-  isOpen         Boolean @default(true)
+  isOpen         Boolean @default(true) // manual switch: off closes the shop even during opening hours
+  autoHours      Boolean @default(true) // open and close automatically by openTime/closeTime (Sri Lanka time)
+  openTime       String  @default("10:00") // 24h "HH:MM"
+  closeTime      String  @default("22:00") // at or before openTime means closing after midnight
   acceptBookings Boolean @default(true)
   bookingStart   String  @default("11:00") // first table-booking time slot, 24h "HH:MM"
   bookingEnd     String  @default("21:30") // last table-booking time slot

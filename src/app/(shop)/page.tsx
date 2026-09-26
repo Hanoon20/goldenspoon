@@ -33,7 +33,9 @@ export default async function HomePage() {
       <HeroStage>
         <p className="inline-flex items-center gap-2 rounded-full border border-gold-300/30 bg-white/[0.03] px-3 py-1 text-xs font-medium text-gold-200">
           <Clock className="h-3.5 w-3.5" aria-hidden />
-          {settings.openingHours}
+          <span className={settings.openNow ? "font-semibold text-green-400" : "font-semibold text-red-400"}>{settings.openNow ? "Open now" : "Closed now"}</span>
+          <span className="text-white/30">|</span>
+          {settings.hoursText}
         </p>
         <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
           <span className="sr-only">{settings.restaurantName}: </span>
@@ -219,7 +221,7 @@ export default async function HomePage() {
                 <Clock className="mt-0.5 h-5 w-5 shrink-0 text-gold-300" aria-hidden />
                 <div>
                   <p className="font-medium text-white">Opening hours</p>
-                  <p className="mt-0.5 text-white/60">{settings.openingHours}</p>
+                  <p className="mt-0.5 text-white/60">{settings.hoursText}</p>
                 </div>
               </li>
               <li className="flex gap-4">

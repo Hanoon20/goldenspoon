@@ -20,12 +20,13 @@ export default async function ShopLayout({ children }: { children: React.ReactNo
         restaurantName={settings.restaurantName}
         whatsappNumber={settings.whatsappNumber}
         phone={settings.phone}
-        openingHours={settings.openingHours}
-        isOpen={settings.isOpen}
+        hoursText={settings.hoursText}
+        openNow={settings.openNow}
+        nextChange={settings.nextChange}
       />
-      {!settings.isOpen && (
+      {!settings.openNow && (
         <div className="bg-red-600 px-4 py-2 text-center text-sm font-medium text-white">
-          We&apos;re closed right now and not taking orders. Opening hours: {settings.openingHours}
+          We&apos;re closed right now and not taking orders. {settings.nextChange ? `${settings.nextChange}.` : `Opening hours: ${settings.hoursText}`}
         </div>
       )}
       <main className="min-h-[60vh]">{children}</main>
