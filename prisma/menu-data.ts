@@ -374,6 +374,7 @@ export const DISH_IMAGES: Record<string, string> = {
   "bbq-chicken": "/dishes/bbq-chicken.webp",
   "chicken-biriyani": "/dishes/chicken-biriyani.webp",
   "chicken-kottu": "/dishes/chicken-kottu.webp",
+  "chicken-cheese-kottu": "/dishes/chicken-cheese-kottu.webp",
   "chicken-nasi-goreng": "/dishes/chicken-nasi-goreng.webp",
   "mixed-shawal": "/dishes/mixed-shawal.webp",
 };
